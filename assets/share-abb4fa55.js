@@ -1,1 +1,0 @@
-import{_ as a,o as r,c as t,b as e,t as o}from"./index-70be3e42.js";const c={},n=e("div",{class:"text-red-500"},"share",-1);function _(s,d){return r(),t("div",null,[n,e("div",null,o(s.$route.params.share_id),1)])}const l=a(c,[["render",_]]);export{l as default};
