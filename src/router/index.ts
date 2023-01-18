@@ -35,10 +35,10 @@ const routes = [
   },
   {
     path: '/:pathMatch(.*)*',
-    name: 'Error',
+    name: 'Not Found',
     component: async () => {
-      const error = await import('@/pages/error.vue')
-      return error
+      const not_found = await import('@/pages/404.vue')
+      return not_found
     },
   },
 ]
