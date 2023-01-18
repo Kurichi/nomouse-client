@@ -1,1 +1,0 @@
-import{_ as e}from"./_plugin-vue_export-helper-c27b6911.js";import{o as t,c}from"./index-6001f8a4.js";const o={},r={class:"text-red-500"};function n(s,_){return t(),c("div",r,"index")}const i=e(o,[["render",n]]);export{i as default};
