@@ -33,22 +33,14 @@ const routes = [
       return share_slide
     },
   },
-  // {
-  //   path: '*',
-  //   name: '404',
-  //   component: async () => {
-  //     const error = await import('@/pages/error.vue')
-  //     return error
-  //   },
-  // },
-  // {
-  //   path: '/login',
-  //   name: 'login',
-  //   component: async () => {
-  //     const login = await import('@/pages/Login.vue')
-  //     return login
-  //   },
-  // },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'Error',
+    component: async () => {
+      const error = await import('@/pages/error.vue')
+      return error
+    },
+  },
 ]
 
 const router = createRouter({
