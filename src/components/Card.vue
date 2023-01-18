@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 const props = defineProps({
   imageUrl: {
     type: String,
@@ -27,7 +25,7 @@ const props = defineProps({
     class="card block rounded-xl overflow-hidden max-w-fit cursor-pointer hover:shadow"
   >
     <div
-      class="relative w-[var(--card-w)] h-[var(--card-h)] m-0 rounded-xl border border-gray-100 box-border overflow-hidden"
+      class="relative w-[var(--card-w)] h-[var(--card-h)] m-0 rounded-xl box-border overflow-hidden"
     >
       <img
         :src="props.imageUrl"
