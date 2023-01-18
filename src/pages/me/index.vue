@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from '@/components/Card.vue'
+import NewCard from '@/components/NewCard.vue'
 
 const cards = [
   {
@@ -38,6 +39,7 @@ const cards = [
 <template>
   <div class="py-20">
     <div class="card-grid">
+      <NewCard />
       <Card
         v-for="(card, index) in cards"
         :key="index"
