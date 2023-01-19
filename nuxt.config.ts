@@ -2,6 +2,6 @@
 export default defineNuxtConfig({
   ssr: false,
   app: {
-    baseURL: '/test-nuxt3'
-  }
+    baseURL: '/nomouse-client',
+  },
 })
