@@ -1,0 +1,1 @@
+import{_ as s}from"./plugin-vueexport-helper-c27b6911.js";import{o as t,b as a,e,t as o}from"./@vue-ccd39675.js";const c={},n=e("div",{class:"text-red-500"},"share",-1);function i(r,_){return t(),a("div",null,[n,e("div",null,o(r.$route.params.share_id),1)])}const f=s(c,[["render",i]]);export{f as default};
