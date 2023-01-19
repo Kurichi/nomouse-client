@@ -21,7 +21,7 @@ const props = defineProps({
 
 <template>
   <router-link
-    :to="`/slide/${props.id}`"
+    :to="`/slide/edit/${props.id}`"
     class="card block rounded-xl overflow-hidden max-w-fit cursor-pointer hover:shadow"
   >
     <div

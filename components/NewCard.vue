@@ -2,7 +2,7 @@
 
 <template>
   <router-link
-    :to="`/slide/id`"
+    :to="`/slide/edit/id`"
     class="card block rounded-xl max-w-fit cursor-pointer"
   >
     <div
