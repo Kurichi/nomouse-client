@@ -1,10 +1,5 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-
-  <div>
-    hoge
-  </div>
+  <div>hoge</div>
 </template>
-
