@@ -45,10 +45,10 @@ const props = defineProps({
 <style lang="scss" scoped>
 .card {
   &__title {
-    font-size: clamp(20px, 2vw, 26px);
+    font-size: clamp(16px, 2vw, 22px);
   }
   &__updated {
-    font-size: clamp(14px, 1.4vw, 18px);
+    font-size: clamp(12px, 1.4vw, 14px);
   }
 }
 </style>

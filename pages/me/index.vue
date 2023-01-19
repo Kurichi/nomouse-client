@@ -37,7 +37,7 @@ const cards = [
 
 <template>
   <div class="py-20">
-    <div class="card-grid">
+    <div class="card-grid max-w-[1210px] mx-auto">
       <NewCard />
       <Card
         v-for="(card, index) in cards"
@@ -53,8 +53,8 @@ const cards = [
 
 <style scoped lang="scss">
 .card-grid {
-  --card-w: clamp(280px, 28vw, 350px);
-  --card-h: clamp(200px, 20vw, 250px);
+  --card-w: clamp(210px, 28vw, 280px);
+  --card-h: clamp(150px, 20vw, 200px);
   display: grid;
   grid-template-columns: repeat(auto-fill, var(--card-w));
   grid-row-gap: 30px;
