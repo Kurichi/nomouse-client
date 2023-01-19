@@ -57,7 +57,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-1/2 h-full bg-[#1e1e1e] py-5">
+  <div class="w-1/2 min-w-[500px] h-full bg-[#1e1e1e] py-5">
     <div
       ref="appMonacoEditorEl"
       class=""
