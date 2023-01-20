@@ -1,1 +1,0 @@
-import{_ as s}from"./_plugin-vue_export-helper-c27b6911.js";import{o,c as r,b as e,t as a}from"./index-2ed7ba78.js";const c={},n=e("div",{class:"text-red-500"},"slide",-1);function i(t,d){return o(),r("div",null,[n,e("div",null,a(t.$route.params.id),1)])}const f=s(c,[["render",i]]);export{f as default};
