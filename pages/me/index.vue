@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import Card from '@/components/Card.vue'
-import NewCard from '@/components/NewCard.vue'
+import Card from '@/components/Card.vue';
+import NewCard from '@/components/NewCard.vue';
+
+definePageMeta({
+  middleware: ['auth'],
+});
 const cards = [
   {
     id: 'id1',
@@ -32,7 +36,7 @@ const cards = [
     created_at: '2022/12/21 12:32:12',
     image_url: '@/assets/test.png',
   },
-]
+];
 </script>
 
 <template>

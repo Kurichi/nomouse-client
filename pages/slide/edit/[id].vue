@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`)
+definePageMeta({
+  middleware: ['auth'],
+});
+
+const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`);
 </script>
 
 <template>
