@@ -4,10 +4,14 @@ const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条�
 
 <template>
   <div
-    class="flex h-[var(--slide-editor-h)] max-w-[1980px] overflow-y-hidden overflow-x-auto"
+    class="flex h-[var(--slide-editor-h)] max-w-[1980px] overflow-y-hidden overflow-x-auto relative"
     id="slide-edit"
     style="--slide-editor-h: calc(100vh - var(--header-h))"
   >
+    <div class="!absolute top-[5%] right-5 z-20 flex">
+      <BaseIconButton name="present_to_all" size="2xl" class="mr-3" />
+      <BaseIconButton name="output" size="2xl" />
+    </div>
     <Editor v-model="code" language="markdown" />
     <Viewer />
   </div>
