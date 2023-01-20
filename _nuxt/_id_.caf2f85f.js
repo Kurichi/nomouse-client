@@ -1,1 +1,0 @@
-import{a,b as t,f as e,t as r,o}from"./entry.2259db3d.js";const c={},n=e("div",{class:"text-red-500"},"share",-1);function _(s,d){return o(),t("div",null,[n,e("div",null,r(s.$route.params.share_id),1)])}const l=a(c,[["render",_]]);export{l as default};
