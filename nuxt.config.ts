@@ -5,10 +5,10 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-16',
       viewport: 'width=500, initial-scale=1',
-      title: 'My App',
+      title: 'Mark Up Slide',
       meta: [
         // <meta name="description" content="My amazing site">
-        { name: 'description', content: 'My amazing site.' },
+        { name: 'description', content: 'Mark Up Slide' },
       ],
       link: [
         {
@@ -17,7 +17,7 @@ export default defineNuxtConfig({
         },
       ],
     },
-    // cdnURL: '/nomouse-client/',
+    // // cdnURL: '/nomouse-client/',
     baseURL: '/nomouse-client',
   },
   modules: ['@nuxtjs/tailwindcss'],
