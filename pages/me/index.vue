@@ -13,7 +13,6 @@ const { data } = await useFetch('/api/v1/slides', {
     Authorization: `Bearer ${token.value}`,
   },
 });
-console.log(data.value as Slide[]);
 const cards = data.value as Slide[];
 
 // const cards = [

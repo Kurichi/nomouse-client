@@ -21,7 +21,6 @@ export const useAuth = () => {
               token.value = idToken;
 
               const runtimeConfig = useRuntimeConfig();
-              console.log(runtimeConfig.baseURL);
               // API サーバー問い合わせ
               useFetch('/api/v1/users', {
                 method: 'GET',
@@ -32,7 +31,6 @@ export const useAuth = () => {
                 },
               })
                 .then((result) => {
-                  console.log(result);
                   resolve();
                 })
                 .catch(async (error) => {
@@ -50,7 +48,6 @@ export const useAuth = () => {
                     },
                   })
                     .then((result) => {
-                      console.log(result);
                       resolve();
                     })
                     .catch(reject);

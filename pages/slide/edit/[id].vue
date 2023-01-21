@@ -1,58 +1,78 @@
 <script setup lang="ts">
-import { numberLiteralTypeAnnotation } from '@babel/types'
-import { editor } from 'monaco-editor'
-import { SlideElement } from '@/@types/slide'
-import Viewer from '@/components/Viewer.vue'
+import { numberLiteralTypeAnnotation } from '@babel/types';
+import { editor } from 'monaco-editor';
+import { SlideElement } from '@/@types/slide';
+import Viewer from '@/components/Viewer.vue';
 
 definePageMeta({
   middleware: ['auth'],
-})
+});
 
-const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`)
-const slides = ref<SlideElement[][]>([[{ type: 'note', text: '' }]])
-const isPresentation = ref(false)
-const changeFlag = ref(false)
-const screenWidth = ref(0)
+const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`);
+const slides = ref<SlideElement[][]>([[{ type: 'note', text: '' }]]);
+const isPresentation = ref(false);
+const changeFlag = ref(false);
+const screenWidth = ref(0);
 
 const analysis = (value: string, event: string) => {
   compile(value, event, (slide) => {
-    slides.value = slide
-    console.log(slides.value)
+    slides.value = slide;
+    console.log(slides.value);
     if (changeFlag.value) {
-      changeFlag.value = false
+      changeFlag.value = false;
     } else {
-      changeFlag.value = true
+      changeFlag.value = true;
     }
-  })
-}
+  });
+};
 
 onMounted(() => {
   document.addEventListener('fullscreenchange', (ev) => {
-    if (document.fullscreenElement === null) isPresentation.value = false
-  })
+    if (document.fullscreenElement === null) isPresentation.value = false;
+  });
   addEventListener('keydown', (ev) => {
     // console.log(ev)
     if (ev.ctrlKey && ev.shiftKey && ev.key === 'H') {
-      isPresentation.value = true
-      document.body.requestFullscreen()
+      isPresentation.value = true;
+      document.body.requestFullscreen();
     } else if (ev.ctrlKey && ev.shiftKey && ev.key === 'K') {
-      console.log('share')
+      console.log('share');
     }
-  })
-  analysis(code.value, '')
-  const screenHeight = screen.height
-  screenWidth.value = screen.width
+  });
+  analysis(code.value, '');
+  const screenHeight = screen.height;
+  screenWidth.value = screen.width;
   if (screenHeight < screenWidth.value * 0.6) {
-    screenWidth.value = screenHeight * 1.4
+    screenWidth.value = screenHeight * 1.4;
   }
-})
+});
 
 const presentation = () => {
-  isPresentation.value = true
-  document.body.requestFullscreen()
-}
+  isPresentation.value = true;
+  document.body.requestFullscreen();
+};
 
-const share = () => {}
+const share = () => {
+  (async () => {
+    const { token } = await useAuth();
+    const route = useRoute();
+    const { data } = await useFetch('/api/v1/share', {
+      method: 'POST',
+      baseURL: 'http://markup-slide.ddns.net',
+      headers: {
+        Authorization: `Bearer ${token.value}`,
+      },
+      query: {
+        slide_id: route.params.id,
+      },
+    });
+
+    const share_id = data.value.share_id;
+    navigator.clipboard.writeText(
+      `https://kurichi.github.io/nomouse-client/slide/share/${share_id}`
+    );
+  })();
+};
 </script>
 
 <template>
