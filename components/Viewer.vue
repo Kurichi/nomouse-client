@@ -1,40 +1,40 @@
 <script setup lang="ts">
-const mainViewer = ref<HTMLDivElement>();
-const mainViewerWidth = ref(0);
+const mainViewer = ref<HTMLDivElement>()
+const mainViewerWidth = ref(0)
 
-const sideViewer = ref<HTMLDivElement>();
-const sideViewerWidth = ref(0);
+const sideViewer = ref<HTMLDivElement>()
+const sideViewerWidth = ref(0)
 
-const mainSlide = ref(0);
+const mainSlide = ref(0)
 
 // const slides = ref<SlideElement[][]>([]);
 
 const props = defineProps({
   slides: { type: Object, required: true }, // v-model用
-});
+})
 
 onMounted(() => {
-  window.addEventListener('resize', mainViewerWidthResize);
-  window.addEventListener('resize', sideViewerWidthResize);
-  mainViewerWidthResize();
-  sideViewerWidthResize();
-});
+  window.addEventListener('resize', mainViewerWidthResize)
+  window.addEventListener('resize', sideViewerWidthResize)
+  mainViewerWidthResize()
+  sideViewerWidthResize()
+})
 
 const mainViewerWidthResize = () => {
-  mainViewerWidth.value = mainViewer.value?.clientWidth!;
-};
+  mainViewerWidth.value = mainViewer.value?.clientWidth!
+}
 const sideViewerWidthResize = () => {
-  sideViewerWidth.value = sideViewer.value?.clientWidth!;
-};
+  sideViewerWidth.value = sideViewer.value?.clientWidth!
+}
 
 onUnmounted(() => {
-  window.removeEventListener('resize', mainViewerWidthResize);
-  window.removeEventListener('resize', sideViewerWidthResize);
-});
+  window.removeEventListener('resize', mainViewerWidthResize)
+  window.removeEventListener('resize', sideViewerWidthResize)
+})
 </script>
 
 <template>
-  <div class="w-1/2 h-full bg-slate-100 min-w-[500px] text-gray-700 flex">
+  <div class="w-1/2 h-full bg-slate-200 min-w-[500px] text-gray-700 flex">
     <div
       class="w-[15%] h-full relative py-3 overflow-y-scroll box-shadow"
       id="side-viewer"
