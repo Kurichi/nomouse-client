@@ -1,20 +1,21 @@
 <script lang="ts" setup>
-import * as monaco from 'monaco-editor'
+import * as monaco from 'monaco-editor';
+import { env } from 'process';
 
 /** コンポーネントのプロパティ */
 const props = defineProps({
   modelValue: String, // v-model用
   language: { type: String, default: `javascript` },
-})
+});
 
 /** 親コンポーネントに発行するイベント定義 */
-const emits = defineEmits([`change`, `update:modelValue`])
+const emits = defineEmits([`change`, `update:modelValue`]);
 
 /** テンプレート参照: MonacoEditor用のDOM要素 */
-const appMonacoEditorEl = ref<HTMLElement>()
+const appMonacoEditorEl = ref<HTMLElement>();
 
 /** 生成したMonacoEditorのインスタンス */
-let monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined = undefined
+let monacoEditor: monaco.editor.IStandaloneCodeEditor | undefined = undefined;
 
 // modelValue(v-model)の監視設定
 watch(
@@ -22,15 +23,15 @@ watch(
   (newVal, oldVal) => {
     // エディタの初期化済みチェック
     if (!monacoEditor) {
-      return
+      return;
     }
 
     // MonacoEditor側に反映する
     if (monacoEditor.getValue() !== newVal) {
-      monacoEditor.setValue(newVal ?? ``)
+      monacoEditor.setValue(newVal ?? ``);
     }
   }
-)
+);
 
 onMounted(() => {
   // MonacoEditorを生成する
@@ -40,20 +41,19 @@ onMounted(() => {
     automaticLayout: true, // 親要素のレイアウト変更に追従させる
     theme: 'vs-dark',
     scrollBeyondLastLine: false,
-  })
+  });
 
   // MonacoEditorのテキスト変更イベントを登録
   monacoEditor.onDidChangeModelContent((event) => {
     // エディタ上のテキストを取得
-    const value = monacoEditor!.getValue()
+    const value = monacoEditor!.getValue();
 
     // 変更イベントを発行
     if (props.modelValue !== value) {
-      emits(`change`, value, event)
-      emits(`update:modelValue`, value, event)
+      emits(`change`, value, event);
     }
-  })
-})
+  });
+});
 </script>
 
 <template>

@@ -4,10 +4,11 @@ type ElementType =
   | 'title'
   | 'text'
   | 'box'
-  | 'tirangle'
+  | 'triangle'
   | 'media'
   | 'note'
-  | 'code-block';
+  | 'code-block'
+  | 'item';
 
 interface Size {
   width?: number | string;

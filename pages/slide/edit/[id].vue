@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { numberLiteralTypeAnnotation } from '@babel/types';
+import { editor } from 'monaco-editor';
+
 definePageMeta({
   middleware: ['auth'],
 });
 
 const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`);
+const slides = ref<SlideElement[][]>([[{ type: 'note', text: '' }]]);
+
+const analysis = (value: string, event: editor.IModelContentChangedEvent) => {
+  compile(value, event, (slide) => {
+    slides.value = slide;
+  });
+};
 </script>
 
 <template>
@@ -16,8 +26,12 @@ const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条�
       <BaseIconButton name="present_to_all" size="2xl" class="mr-3" />
       <BaseIconButton name="output" size="2xl" />
     </div>
-    <Editor v-model="code" language="markdown" />
-    <Viewer />
+    <Editor
+      v-model="code"
+      language="markdown"
+      @change="(value, event) => analysis(value, event)"
+    />
+    <Viewer :slides="slides" />
   </div>
 </template>
 

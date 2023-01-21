@@ -2,25 +2,25 @@
 const props = defineProps({
   width: { type: Number, default: 350 },
   shadowSize: { type: String, default: 'base' },
-  slideData: { type: Number, required: true },
-})
+  slideData: { type: Object, required: true },
+});
 
 const shadowSizeHandler = (): string => {
   switch (props.shadowSize) {
     case 'base':
-      return 'shadow'
+      return 'shadow';
     case 'md':
-      return 'shadow-md'
+      return 'shadow-md';
     case 'lg':
-      return 'shadow-lg'
+      return 'shadow-lg';
     case 'xl':
-      return 'shadow-xl'
+      return 'shadow-xl';
     case '2xl':
-      return 'shadow-2xl'
+      return 'shadow-2xl';
     default:
-      return 'shadow'
+      return 'shadow';
   }
-}
+};
 </script>
 
 <template>
