@@ -16,6 +16,10 @@ onAuthStateChanged(auth, (user) => {
   <div
     class="w-full h-[var(--header-h)] flex items-center justify-end px-10 bg-slate-100"
   >
-    <BaseUser :user-icon-url="avatar ?? ''" user-name="userName" />
+    <BaseUser
+      v-if="avatar"
+      :user-icon-url="avatar ?? ''"
+      user-name="userName"
+    />
   </div>
 </template>
