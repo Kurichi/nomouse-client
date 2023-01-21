@@ -9,13 +9,14 @@ definePageMeta({
 });
 
 const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`);
-const slides = ref<SlideElement[][]>([[{ type: 'note', text: '' }]]);
+const slides = ref<Page[]>([]);
 const isPresentation = ref(false);
+const currentSlide = ref(0);
 const changeFlag = ref(false);
 const screenWidth = ref(0);
 
-const analysis = (value: string, event: string) => {
-  compile(value, event, (slide) => {
+const analysis = (value: string, change: string) => {
+  compile(value, change, (slide) => {
     slides.value = slide;
     console.log(slides.value);
     if (changeFlag.value) {
@@ -23,6 +24,13 @@ const analysis = (value: string, event: string) => {
     } else {
       changeFlag.value = true;
     }
+  });
+};
+
+const cursorPosition = (lineNumber: number) => {
+  slides.value.forEach((value, index) => {
+    if (value.beginPageLine <= lineNumber && lineNumber <= value.endPageLine)
+      currentSlide.value = index;
   });
 };
 
@@ -99,6 +107,7 @@ const share = () => {
       />
       <Viewer
         ref="viewer"
+        :current-slide="currentSlide"
         name="viewer"
         :slides="slides"
         :change-flag="changeFlag"

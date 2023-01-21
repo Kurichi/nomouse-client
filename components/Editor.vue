@@ -9,7 +9,7 @@ const props = defineProps({
 });
 
 /** 親コンポーネントに発行するイベント定義 */
-const emits = defineEmits([`change`, `update:modelValue`]);
+const emits = defineEmits([`change`, `move`]);
 
 /** テンプレート参照: MonacoEditor用のDOM要素 */
 const appMonacoEditorEl = ref<HTMLElement>();
@@ -43,15 +43,19 @@ onMounted(() => {
     scrollBeyondLastLine: false,
   });
 
+  monacoEditor?.onDidChangeCursorPosition((event) => {
+    emits(`move`, event.position.lineNumber);
+  });
+
   // MonacoEditorのテキスト変更イベントを登録
   monacoEditor.onDidChangeModelContent((event) => {
     // エディタ上のテキストを取得
     const value = monacoEditor!.getValue();
 
     // 変更イベントを発行
-    if (props.modelValue !== value) {
-      emits(`change`, value, event);
-    }
+    // if (props.modelValue !== value) {
+    emits(`change`, value, event);
+    // }
   });
 });
 </script>
