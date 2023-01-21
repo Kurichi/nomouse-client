@@ -59,6 +59,8 @@ const draw = () => {
     const ctx = slideCanvas.value.getContext('2d')
     if (ctx) {
       ctx.clearRect(0, 0, slideCanvas.value.width, slideCanvas.value.height)
+      ctx.fillStyle = '#ffffff'
+      ctx.fillRect(0, 0, slideCanvas.value.width, slideCanvas.value.height)
 
       props.slideData.forEach((element: SlideElement) => {
         if (element.color) {

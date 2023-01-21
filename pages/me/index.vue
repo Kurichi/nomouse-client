@@ -1,52 +1,19 @@
 <script setup lang="ts">
-import Card from '@/components/Card.vue';
-import NewCard from '@/components/NewCard.vue';
+import Card from '@/components/Card.vue'
+import NewCard from '@/components/NewCard.vue'
 
 definePageMeta({
   middleware: ['auth'],
-});
+})
 
-const { token } = useAuth();
+const { token } = useAuth()
 const { data } = await useFetch('/api/v1/slides', {
   baseURL: 'http://markup-slide.ddns.net',
   headers: {
     Authorization: `Bearer ${token.value}`,
   },
-});
-const cards = data.value as Slide[];
-
-// const cards = [
-//   {
-//     id: 'id1',
-//     title: 'title1',
-//     created_at: '2022/12/21 12:32:12',
-//     image_url: '@/assets/test.png',
-//   },
-//   {
-//     id: 'id2',
-//     title: 'title2',
-//     created_at: '2022/12/21 12:32:12',
-//     image_url: '@/assets/test.png',
-//   },
-//   {
-//     id: 'id3',
-//     title: 'title3',
-//     created_at: '2022/12/21 12:32:12',
-//     image_url: '@/assets/test.png',
-//   },
-//   {
-//     id: 'id4',
-//     title: 'title4',
-//     created_at: '2022/12/21 12:32:12',
-//     image_url: '@/assets/test.png',
-//   },
-//   {
-//     id: 'id5',
-//     title: 'title5',
-//     created_at: '2022/12/21 12:32:12',
-//     image_url: '@/assets/test.png',
-//   },
-// ];
+})
+const cards = data.value as Slide[]
 </script>
 
 <template>
