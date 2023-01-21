@@ -1,6 +1,7 @@
-type Basic = 'plane' | 'bullet' | 'number';
 type ElementType =
-  | Basic
+  | 'plane'
+  | 'bullet'
+  | 'number'
   | 'title'
   | 'text'
   | 'box'
@@ -8,33 +9,36 @@ type ElementType =
   | 'media'
   | 'note'
   | 'code-block'
-  | 'item';
+  | 'item'
+
+type YPositionType = 'top' | 'bottom' | 'center'
+type XPositionType = 'left' | 'right' | 'center'
 
 interface Size {
-  width?: number | string;
-  height?: number | string;
+  width?: string
+  height?: string
 }
 
 interface Position {
-  x?: number | string;
-  y?: number | string;
+  x?: string | XPositionType
+  y?: string | YPositionType
 }
 
-interface SlideElement {
-  type: ElementType | null;
-  text: string;
+export interface SlideElement {
+  type: ElementType | null
+  text: string
 
-  color?: string;
-  size?: Size | string;
-  position?: Position | string;
+  color?: string
+  size?: Size | string
+  position?: Position
 }
 
 interface SlideInfo {
-  title: string;
-  author: User;
-  theme: string;
-  createdAt: Date;
-  updatedAt: Date;
+  title: string
+  author: User
+  theme: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 interface Slide {

@@ -1,42 +1,58 @@
 <script setup lang="ts">
-import { numberLiteralTypeAnnotation } from '@babel/types';
-import { editor } from 'monaco-editor';
+import { numberLiteralTypeAnnotation } from '@babel/types'
+import { editor } from 'monaco-editor'
+import { SlideElement } from '@/@types/slide'
+import Viewer from '@/components/Viewer.vue'
 
 definePageMeta({
   middleware: ['auth'],
-});
+})
 
-const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`);
-const slides = ref<SlideElement[][]>([[{ type: 'note', text: '' }]]);
-const isPresentation = ref(false);
+const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`)
+const slides = ref<SlideElement[][]>([[{ type: 'note', text: '' }]])
+const isPresentation = ref(false)
+const changeFlag = ref(false)
+const screenWidth = ref(0)
 
-const analysis = (value: string, event: editor.IModelContentChangedEvent) => {
+const analysis = (value: string, event: string) => {
   compile(value, event, (slide) => {
-    slides.value = slide;
-  });
-};
+    slides.value = slide
+    console.log(slides.value)
+    if (changeFlag.value) {
+      changeFlag.value = false
+    } else {
+      changeFlag.value = true
+    }
+  })
+}
 
 onMounted(() => {
   document.addEventListener('fullscreenchange', (ev) => {
-    if (document.fullscreenElement === null) isPresentation.value = false;
-  });
+    if (document.fullscreenElement === null) isPresentation.value = false
+  })
   addEventListener('keydown', (ev) => {
-    console.log(ev);
+    // console.log(ev)
     if (ev.ctrlKey && ev.shiftKey && ev.key === 'H') {
-      isPresentation.value = true;
-      document.body.requestFullscreen();
+      isPresentation.value = true
+      document.body.requestFullscreen()
     } else if (ev.ctrlKey && ev.shiftKey && ev.key === 'K') {
-      console.log('share');
+      console.log('share')
     }
-  });
-});
+  })
+  analysis(code.value, '')
+  const screenHeight = screen.height
+  screenWidth.value = screen.width
+  if (screenHeight < screenWidth.value * 0.6) {
+    screenWidth.value = screenHeight * 1.4
+  }
+})
 
 const presentation = () => {
-  isPresentation.value = true;
-  document.body.requestFullscreen();
-};
+  isPresentation.value = true
+  document.body.requestFullscreen()
+}
 
-const share = () => {};
+const share = () => {}
 </script>
 
 <template>
@@ -45,7 +61,7 @@ const share = () => {};
       class="flex h-[var(--slide-editor-h)] max-w-[1980px] overflow-y-hidden overflow-x-auto relative"
       id="slide-edit"
       style="--slide-editor-h: calc(100vh - var(--header-h))"
-      v-if="!isPresentation"
+      v-show="!isPresentation"
     >
       <div class="!absolute top-[5%] right-5 z-20 flex">
         <BaseIconButton
@@ -59,11 +75,20 @@ const share = () => {};
       <Editor
         v-model="code"
         language="markdown"
-        @change="(value, event) => analysis(value, event)"
+        @change="(value, event) => analysis(value, event.changes[0].text)"
       />
-      <Viewer name="viewer" :slides="slides" />
+      <Viewer
+        ref="viewer"
+        name="viewer"
+        :slides="slides"
+        :change-flag="changeFlag"
+      />
     </div>
-    <Presentation :slides="slides" v-else />
+    <Presentation
+      :slides="slides"
+      :screen-width="screenWidth"
+      v-if="isPresentation"
+    />
   </div>
 </template>
 

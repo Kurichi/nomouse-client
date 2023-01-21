@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { SlideElement } from '@/@types/slide'
+import BaseSlide from '@/components/BaseSlide.vue'
+
 const mainViewer = ref<HTMLDivElement>()
 const mainViewerWidth = ref(0)
 
@@ -11,7 +14,10 @@ const mainSlide = ref(0)
 
 const props = defineProps({
   slides: { type: Object, required: true }, // v-model用
+  changeFlag: { type: Boolean, required: true },
 })
+
+const { changeFlag } = toRefs(props)
 
 onMounted(() => {
   window.addEventListener('resize', mainViewerWidthResize)
@@ -25,6 +31,25 @@ const mainViewerWidthResize = () => {
 }
 const sideViewerWidthResize = () => {
   sideViewerWidth.value = sideViewer.value?.clientWidth!
+}
+
+const getNote = (slide: SlideElement[]): string => {
+  let note = ''
+  slide.map((element: SlideElement) => {
+    if (element.type === 'note') {
+      note = element.text
+    }
+  })
+
+  return note
+}
+
+const getMainSlide = (): SlideElement[] => {
+  return props.slides[mainSlide.value]
+}
+
+const changeMainSlide = (index: number) => {
+  mainSlide.value = index
 }
 
 onUnmounted(() => {
@@ -48,21 +73,29 @@ onUnmounted(() => {
         <BaseSlide
           :width="sideViewerWidth - 15"
           :slide-data="slide"
+          :change-flag="changeFlag"
+          :slide-id="`sub-${index}`"
           class="mx-auto cursor-pointer"
-          @click="mainSlide = index"
+          @click="changeMainSlide(index)"
         />
-        <div class="text-center text-xs text-gray-400 mt-1">{{ index }}</div>
+        <div class="text-center text-xs text-gray-400 mt-1 select-none">
+          {{ index + 1 }}
+        </div>
       </div>
     </div>
     <div class="w-[85%] h-full relative" ref="mainViewer">
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <BaseSlide
+          ref="baseSlide"
           :width="mainViewerWidth - 40"
-          :slide-data="props.slides[mainSlide]"
+          :slide-data="getMainSlide()"
+          :change-flag="changeFlag"
+          :slide-index="mainSlide"
+          slide-id="main"
           shadow-size="lg"
         />
         <BaseSlideComment
-          :comment="(props.slides as SlideElement[][])[mainSlide][0].text"
+          :comment="getNote((props.slides as SlideElement[][])[mainSlide])"
           class="mx-auto mt-10"
         />
       </div>
