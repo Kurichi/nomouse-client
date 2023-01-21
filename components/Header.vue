@@ -18,6 +18,7 @@ onAuthStateChanged(auth, (user) => {
   >
     <BaseUser
       v-if="avatar"
+      size="large"
       :user-icon-url="avatar ?? ''"
       user-name="userName"
     />
