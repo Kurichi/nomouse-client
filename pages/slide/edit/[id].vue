@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { numberLiteralTypeAnnotation } from '@babel/types';
-import { editor } from 'monaco-editor';
-import { SlideElement } from '@/@types/slide';
 import Viewer from '@/components/Viewer.vue';
 
 definePageMeta({
@@ -104,6 +101,7 @@ const share = () => {
         v-model="code"
         language="markdown"
         @change="(value, event) => analysis(value, event.changes[0].text)"
+        @move="(lineNumber) => cursorPosition(lineNumber)"
       />
       <Viewer
         ref="viewer"

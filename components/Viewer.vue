@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SlideElement } from '@/@types/slide';
+// import { SlideElement } from '@/@types/slide';
 import BaseSlide from '@/components/BaseSlide.vue';
 
 const mainViewer = ref<HTMLDivElement>();
@@ -36,9 +36,9 @@ const sideViewerWidthResize = () => {
 
 const getNote = (slide: SlideElement[]): string => {
   let note = '';
-  slide.map((element: SlideElement) => {
-    if (element.type === 'note') {
-      note = element.text;
+  slide?.map((element: SlideElement) => {
+    if (element?.type === 'note') {
+      note = element?.text;
     }
   });
 
@@ -46,7 +46,8 @@ const getNote = (slide: SlideElement[]): string => {
 };
 
 const getMainSlide = (): SlideElement[] => {
-  return props.slides[props.currentSlide];
+  console.log('ababa', props.currentSlide);
+  return props.slides[props.currentSlide]?.elements;
 };
 
 const changeMainSlide = (index: number) => {
@@ -91,12 +92,12 @@ onUnmounted(() => {
           :width="mainViewerWidth - 40"
           :slide-data="getMainSlide()"
           :change-flag="changeFlag"
-          :slide-index="mainSlide"
+          :slide-index="props.currentSlide"
           slide-id="main"
           shadow-size="lg"
         />
         <BaseSlideComment
-          :comment="getNote((props.slides as Page[])[props.currentSlide].elements)"
+          :comment="getNote((props.slides as Page[])[props.currentSlide]?.elements)"
           class="mx-auto mt-10"
         />
       </div>
