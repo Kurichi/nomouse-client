@@ -1,32 +1,36 @@
 <script setup lang="ts">
-const mainViewer = ref<HTMLDivElement>()
-const mainViewerWidth = ref(0)
+const mainViewer = ref<HTMLDivElement>();
+const mainViewerWidth = ref(0);
 
-const sideViewer = ref<HTMLDivElement>()
-const sideViewerWidth = ref(0)
+const sideViewer = ref<HTMLDivElement>();
+const sideViewerWidth = ref(0);
 
-const mainSlide = ref(0)
+const mainSlide = ref(0);
 
-const slides = ref<number[]>([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+// const slides = ref<SlideElement[][]>([]);
+
+const props = defineProps({
+  slides: { type: Object, required: true }, // v-model用
+});
 
 onMounted(() => {
-  window.addEventListener('resize', mainViewerWidthResize)
-  window.addEventListener('resize', sideViewerWidthResize)
-  mainViewerWidthResize()
-  sideViewerWidthResize()
-})
+  window.addEventListener('resize', mainViewerWidthResize);
+  window.addEventListener('resize', sideViewerWidthResize);
+  mainViewerWidthResize();
+  sideViewerWidthResize();
+});
 
 const mainViewerWidthResize = () => {
-  mainViewerWidth.value = mainViewer.value?.clientWidth!
-}
+  mainViewerWidth.value = mainViewer.value?.clientWidth!;
+};
 const sideViewerWidthResize = () => {
-  sideViewerWidth.value = sideViewer.value?.clientWidth!
-}
+  sideViewerWidth.value = sideViewer.value?.clientWidth!;
+};
 
 onUnmounted(() => {
-  window.removeEventListener('resize', mainViewerWidthResize)
-  window.removeEventListener('resize', sideViewerWidthResize)
-})
+  window.removeEventListener('resize', mainViewerWidthResize);
+  window.removeEventListener('resize', sideViewerWidthResize);
+});
 </script>
 
 <template>
@@ -36,7 +40,11 @@ onUnmounted(() => {
       id="side-viewer"
       ref="sideViewer"
     >
-      <div v-for="(slide, index) in slides" :key="index" class="mb-1">
+      <div
+        v-for="(slide, index) in (props.slides as SlideElement[][])"
+        :key="index"
+        class="mb-1"
+      >
         <BaseSlide
           :width="sideViewerWidth - 15"
           :slide-data="slide"
@@ -50,10 +58,13 @@ onUnmounted(() => {
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <BaseSlide
           :width="mainViewerWidth - 40"
-          :slide-data="slides[mainSlide]"
+          :slide-data="props.slides[mainSlide]"
           shadow-size="lg"
         />
-        <BaseSlideComment class="mx-auto mt-10" />
+        <BaseSlideComment
+          :comment="(props.slides as SlideElement[][])[mainSlide][0].text"
+          class="mx-auto mt-10"
+        />
       </div>
     </div>
   </div>
