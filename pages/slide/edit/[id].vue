@@ -38,10 +38,9 @@ onMounted(() => {
   addEventListener('keydown', (ev) => {
     // console.log(ev)
     if (ev.ctrlKey && ev.shiftKey && ev.key === 'H') {
-      isPresentation.value = true;
-      document.body.requestFullscreen();
+      presentation();
     } else if (ev.ctrlKey && ev.shiftKey && ev.key === 'K') {
-      console.log('share');
+      share();
     }
   });
   analysis(code.value, '');
