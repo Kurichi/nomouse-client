@@ -36,3 +36,13 @@ interface SlideInfo {
   createdAt: Date;
   updatedAt: Date;
 }
+
+interface Slide {
+  id: string;
+  thumbnail: string;
+  code: string;
+  compiled_data: string;
+  google_uid: string;
+  created_at: Data;
+  updated_at: Data;
+}

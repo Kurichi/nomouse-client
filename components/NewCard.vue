@@ -1,8 +1,27 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const newCard = async () => {
+  const { token } = useAuth();
+  const { data } = await useFetch('/api/v1/slides', {
+    method: 'POST',
+    baseURL: 'http://markup-slide.ddns.net',
+    headers: {
+      Authorization: `Bearer ${token.value}`,
+    },
+    body: {
+      code: '',
+      compiled_data: '[]',
+      thumbnail: '',
+    },
+  });
+
+  const router = useRouter();
+  router.push(`/slide/edit/${(data.value as Slide)?.id}`);
+};
+</script>
 
 <template>
-  <router-link
-    :to="`/slide/edit/id`"
+  <div
+    @click="newCard()"
     class="card block rounded-xl max-w-fit cursor-pointer"
   >
     <div
@@ -14,7 +33,7 @@
         add
       </span>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <style lang="scss" scoped>

@@ -21,31 +21,40 @@ export const useAuth = () => {
               token.value = idToken;
 
               const runtimeConfig = useRuntimeConfig();
+              console.log(runtimeConfig.baseURL);
               // API サーバー問い合わせ
-              // useFetch('/user', {
-              //   method: 'GET',
-              //   baseURL: runtimeConfig.baseURL,
-              //   headers: {
-              //     Authorization: `Bearer ${token.value}`,
-              //   },
-              // })
-              //   .then((result) => {
-              //     console.log(result);
-              //     resolve();
-              //   })
-              //   .catch((error) => {
-              //     console.error(error);
-              //     useFetch('/user', {
-              //       method: 'POST',
-              //       baseURL: runtimeConfig.baseURL,
-              //       headers: {
-              //         Authorization: `Bearer ${token.value}`,
-              //       },
-              //     }).then((result) => {
-              //       console.log(result);
-              //       resolve();
-              //     });
-              //   });
+              useFetch('/api/v1/users', {
+                method: 'GET',
+                baseURL: 'http://markup-slide.ddns.net',
+                // baseURL: runtimeConfig.baseURL,
+                headers: {
+                  Authorization: `Bearer ${token.value}`,
+                },
+              })
+                .then((result) => {
+                  console.log(result);
+                  resolve();
+                })
+                .catch(async (error) => {
+                  const uid = await auth.currentUser?.uid;
+                  console.error(error);
+                  useFetch('/api/v1/users', {
+                    method: 'POST',
+                    baseURL: 'http://markup-slide.ddns.net',
+                    // baseURL: runtimeConfig.baseURL,
+                    headers: {
+                      Authorization: `Bearer ${token.value}`,
+                    },
+                    body: {
+                      google_uid: uid,
+                    },
+                  })
+                    .then((result) => {
+                      console.log(result);
+                      resolve();
+                    })
+                    .catch(reject);
+                });
               resolve();
             })
             .catch(reject);
@@ -61,6 +70,9 @@ export const useAuth = () => {
         .then(() => {
           token.value = null;
           resolve();
+
+          const router = useRouter();
+          router.push('/');
         })
         .catch((error) => {
           reject(error);
