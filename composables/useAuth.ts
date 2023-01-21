@@ -19,6 +19,33 @@ export const useAuth = () => {
             .getIdToken()
             .then((idToken) => {
               token.value = idToken;
+
+              const runtimeConfig = useRuntimeConfig();
+              // API サーバー問い合わせ
+              // useFetch('/user', {
+              //   method: 'GET',
+              //   baseURL: runtimeConfig.baseURL,
+              //   headers: {
+              //     Authorization: `Bearer ${token.value}`,
+              //   },
+              // })
+              //   .then((result) => {
+              //     console.log(result);
+              //     resolve();
+              //   })
+              //   .catch((error) => {
+              //     console.error(error);
+              //     useFetch('/user', {
+              //       method: 'POST',
+              //       baseURL: runtimeConfig.baseURL,
+              //       headers: {
+              //         Authorization: `Bearer ${token.value}`,
+              //       },
+              //     }).then((result) => {
+              //       console.log(result);
+              //       resolve();
+              //     });
+              //   });
               resolve();
             })
             .catch(reject);
