@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-const showModal = ref(false)
+import { ref } from 'vue';
+const showModal = ref(false);
 const props = defineProps({
   size: {
     type: String,
@@ -14,23 +14,21 @@ const props = defineProps({
     type: String,
     required: true,
   },
-})
+});
 const getUserIconWidth = (): string => {
   switch (props.size) {
     case 'small':
-      return '20px'
+      return '20px';
     case 'base':
-      return '30px'
+      return '30px';
     case 'large':
-      return '40px'
+      return '40px';
     default:
-      return '30px'
+      return '30px';
   }
-}
-const logout = () => {
-  console.log('logout')
-  showModal.value = false
-}
+};
+
+const { signOut } = useAuth();
 </script>
 
 <template>
@@ -50,7 +48,7 @@ const logout = () => {
       v-if="showModal"
       class="w-36 absolute top-10 right-0 bg-gray-100 rounded-lg shadow py-5 flex flex-col items-center z-30"
     >
-      <span class="w-fit text-sm cursor-pointer select-none" @click="logout()"
+      <span class="w-fit text-sm cursor-pointer select-none" @click="signOut()"
         >ログアウト</span
       >
     </div>
