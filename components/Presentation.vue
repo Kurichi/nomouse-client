@@ -1,36 +1,36 @@
 <script setup lang="ts">
-const currentPage = ref(0)
+const currentPage = ref(0);
 
 const props = defineProps({
   slides: { type: Object, required: true }, // v-model用
   screenWidth: { type: Number, required: true },
-})
+});
 
 onMounted(() => {
   addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight' || e.key === 'Enter') {
       if (currentPage.value + 1 < props.slides.length) {
-        currentPage.value++
+        currentPage.value++;
       } else {
-        exitFullscreen()
+        exitFullscreen();
       }
     } else if (e.key === 'ArrowLeft' && currentPage.value > 0)
-      currentPage.value--
-  })
-})
+      currentPage.value--;
+  });
+});
 
 const exitFullscreen = () => {
-  currentPage.value = 0
-  document.exitFullscreen()
-}
+  currentPage.value = 0;
+  document.exitFullscreen();
+};
 
 const nextPage = () => {
   if (currentPage.value + 1 < props.slides.length) {
-    currentPage.value++
+    currentPage.value++;
   } else {
-    exitFullscreen()
+    exitFullscreen();
   }
-}
+};
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const nextPage = () => {
     @click="nextPage()"
   >
     <BaseSlide
-      :slide-data="props.slides[currentPage].elements"
+      :slide-data="props.slides[currentPage]?.elements"
       :width="screenWidth"
       :slide-index="currentPage"
       slide-id="presentation"

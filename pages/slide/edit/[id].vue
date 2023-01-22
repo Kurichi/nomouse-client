@@ -1,84 +1,84 @@
 <script setup lang="ts">
-import Viewer from '@/components/Viewer.vue'
-import { Buffer } from 'buffer'
+import Viewer from '@/components/Viewer.vue';
+import { Buffer } from 'buffer';
 
 definePageMeta({
   middleware: ['auth'],
-})
+});
 
-const copyed = ref(false)
-const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`)
-const slides = ref<Page[]>([])
-const thumbnail = ref('')
-const isPresentation = ref(false)
-const currentSlide = ref(0)
-const changeFlag = ref(false)
-const screenWidth = ref(0)
+const copyed = ref(false);
+const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`);
+const slides = ref<Page[]>([]);
+const thumbnail = ref('');
+const isPresentation = ref(false);
+const currentSlide = ref(0);
+const changeFlag = ref(false);
+const screenWidth = ref(0);
 
-const route = useRoute()
-const { token } = useAuth()
+const route = useRoute();
+const { token } = useAuth();
 const { data } = await useFetch(`/api/v1/slides/${route.params.id}/`, {
   baseURL: 'https://markup-slide.ddns.net',
   headers: {
     Authorization: `Bearer ${token.value}`,
   },
-})
+});
 
-const slideData = data.value as Slide
+const slideData = data.value as Slide;
 
-code.value = slideData.code
-slides.value = JSON.parse(slideData.compiled_data)
-thumbnail.value = slideData.thumbnail
+code.value = slideData.code;
+slides.value = JSON.parse(slideData.compiled_data);
+thumbnail.value = slideData.thumbnail;
 
 const analysis = (value: string, change: string) => {
-  code.value = value
+  code.value = value;
   compile(value, change, (slide) => {
-    slides.value = slide
+    slides.value = slide;
     if (changeFlag.value) {
-      changeFlag.value = false
+      changeFlag.value = false;
     } else {
-      changeFlag.value = true
+      changeFlag.value = true;
     }
-    save()
-  })
-}
+    save();
+  });
+};
 
 const cursorPosition = (lineNumber: number) => {
   slides.value.forEach((value, index) => {
     if (value.beginPageLine <= lineNumber && lineNumber <= value.endPageLine)
-      currentSlide.value = index
-  })
-}
+      currentSlide.value = index;
+  });
+};
 
 onMounted(() => {
   document.addEventListener('fullscreenchange', (ev) => {
-    if (document.fullscreenElement === null) isPresentation.value = false
-  })
+    if (document.fullscreenElement === null) isPresentation.value = false;
+  });
   addEventListener('keydown', (ev) => {
     // console.log(ev)
     if (ev.ctrlKey && ev.shiftKey && ev.key === 'H') {
-      presentation()
+      presentation();
     } else if (ev.ctrlKey && ev.shiftKey && ev.key === 'K') {
-      share()
+      share();
     }
-  })
-  analysis(code.value, '')
-  const screenHeight = screen.height
-  screenWidth.value = screen.width
+  });
+  analysis(code.value, '');
+  const screenHeight = screen.height;
+  screenWidth.value = screen.width;
   if (screenHeight < screenWidth.value * 0.6) {
-    screenWidth.value = screenHeight * 1.4
+    screenWidth.value = screenHeight * 1.4;
   }
-})
+});
 
 const presentation = () => {
-  isPresentation.value = true
-  document.body.requestFullscreen()
-}
+  isPresentation.value = true;
+  document.body.requestFullscreen();
+};
 
 const share = () => {
-  ;(async () => {
-    const { token } = await useAuth()
-    const route = useRoute()
+  (async () => {
+    const { token } = await useAuth();
+    const route = useRoute();
     const { data } = await useFetch('/api/v1/share', {
       method: 'POST',
       baseURL: 'https://markup-slide.ddns.net',
@@ -88,42 +88,44 @@ const share = () => {
       query: {
         slide_id: route.params.id,
       },
-    })
+    });
 
-    const share_id = data.value.share_id
+    const share_id = data.value.share_id;
     navigator.clipboard.writeText(
       `https://kurichi.github.io/nomouse-client/slide/share/${share_id}`
-    )
-    copyed.value = true
+    );
+    copyed.value = true;
     setTimeout(() => {
-      copyed.value = false
-    }, 4000)
-  })()
-}
+      copyed.value = false;
+    }, 4000);
+  })();
+};
 
 const save = () => {
-  // const canvas: HTMLCanvasElement = document.querySelector(`#slide-sub-0`)!
-  // if (canvas) {
-  //   const imageUrl = canvas.toDataURL('image/png', 1.0)
-  //   console.log(imageUrl)
-  //   ;(async () => {
-  //     const { token } = await useAuth()
-  //     useFetch('/api/v1/assets/', {
-  //       method: 'POST',
-  //       baseURL: 'https://markup-slide.ddns.net',
-  //       headers: {
-  //         Authorization: `Bearer ${token.value}`,
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //       body: {
-  //         file: createBlob(imageUrl),
-  //       },
-  //     })
-  //   })()
-  // }
-  ;(async () => {
-    const { token } = await useAuth()
-    const route = useRoute()
+  const canvas: HTMLCanvasElement = document.querySelector(`#slide-sub-0`)!;
+  if (canvas) {
+    const imageUrl = canvas.toDataURL('image/png', 1.0);
+    console.log(imageUrl.length);
+    (async () => {
+      const { token } = await useAuth();
+      const { data } = await useFetch('/api/v1/assets/', {
+        method: 'POST',
+        baseURL: 'https://markup-slide.ddns.net',
+        headers: {
+          Authorization: `Bearer ${token.value}`,
+          // 'Content-Type': 'multipart/form-data',
+        },
+        body: {
+          slide_id: useRoute().params.id,
+          file: imageUrl.replace('data:image/png;base64,', ''),
+        },
+      });
+      console.log(data);
+    })();
+  }
+  (async () => {
+    const { token } = await useAuth();
+    const route = useRoute();
     if (route.params.id) {
       const { data } = await useFetch('/api/v1/slides/', {
         method: 'PUT',
@@ -137,14 +139,14 @@ const save = () => {
           compiled_data: JSON.stringify(slides.value),
           thumbnail: thumbnail.value,
         },
-      })
+      });
     }
-  })()
-}
+  })();
+};
 
 onUnmounted(() => {
-  save()
-})
+  save();
+});
 </script>
 
 <template>
