@@ -8,7 +8,7 @@ definePageMeta({
 
 const { token } = useAuth()
 const { data } = await useFetch('/api/v1/slides', {
-  baseURL: 'http://markup-slide.ddns.net',
+  baseURL: 'https://markup-slide.ddns.net',
   headers: {
     Authorization: `Bearer ${token.value}`,
   },
@@ -29,7 +29,7 @@ const cards = data.value as Slide[]
         :id="card.id"
         :title="'temp'"
         :created-at="card.created_at"
-        :image-url="`http://markup-slide.ddns.net/assets/${card.google_uid}/${card.id}.png`"
+        :image-url="`https://markup-slide.ddns.net/assets/${card.google_uid}/${card.id}.png`"
       />
     </div>
   </div>

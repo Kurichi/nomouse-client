@@ -3,7 +3,7 @@ const { token } = useAuth()
 const route = useRoute()
 const { data } = await useFetch('/api/v1/share', {
   method: 'GET',
-  baseURL: 'http://markup-slide.ddns.net',
+  baseURL: 'https://markup-slide.ddns.net',
   headers: {
     Authorization: `Bearer ${token.value}`,
   },

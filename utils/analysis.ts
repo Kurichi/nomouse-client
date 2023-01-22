@@ -91,21 +91,23 @@ export const compile = (
           e.type = 'number';
           e.text = elem;
         }
-        // メディア
-        else if (elem.startsWith('!')) {
-          e.type = 'media';
-          e.text = elem.replace('!', '');
-        }
+        // // メディア
+        // else if (elem.startsWith('!')) {
+        //   e.type = 'media';
+        //   e.text = elem.replace('!', '');
+        // }
 
         // アイテム
         else if (elem.startsWith('\\')) {
-          const options = elem.split(' ');
-          e.type = options[0].replace('\\', '') as ElementType;
+          e.type = elem.split(' ')[0].replace('\\', '') as ElementType;
+          const options = elem.replace(/^\\^[ ]+ /g, '').split(' ');
+          e.size = {};
+          e.position = {};
           options.forEach((order) => {
             const [_for, _val] = order.split(/[:=]/g);
             // const _val = order.split('=')[1];
-
-            if (_for === 'color') {
+            if (typeof _val === 'undefined') e.text = _for;
+            else if (_for === 'color') {
               e.color = _val;
             } else if (_for === 'size') {
               if (typeof _val !== 'undefined') {
@@ -118,13 +120,9 @@ export const compile = (
                 };
               }
             } else if (_for === 'width') {
-              e.size = {
-                width: _val,
-              };
+              e.size.width = _val;
             } else if (_for === 'height') {
-              e.size = {
-                height: _val,
-              };
+              e.size.height = _val;
             } else if (_for === 'position') {
               if (typeof _val !== 'undefined') {
                 const [x, y] = _val.replaceAll(/[\(\)]/g, '').split(',');
@@ -134,13 +132,9 @@ export const compile = (
                 };
               }
             } else if (_for === 'x') {
-              e.position = {
-                x: _val,
-              };
+              e.position.x = _val;
             } else if (_for === 'y') {
-              e.position = {
-                y: _val,
-              };
+              e.position.y = _val;
             }
           });
         } else {

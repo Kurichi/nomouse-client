@@ -24,7 +24,7 @@ export const useAuth = () => {
               // API サーバー問い合わせ
               useFetch('/api/v1/users', {
                 method: 'GET',
-                baseURL: 'http://markup-slide.ddns.net',
+                baseURL: 'https://markup-slide.ddns.net',
                 // baseURL: runtimeConfig.baseURL,
                 headers: {
                   Authorization: `Bearer ${token.value}`,
@@ -38,7 +38,7 @@ export const useAuth = () => {
                   console.error(error);
                   useFetch('/api/v1/users', {
                     method: 'POST',
-                    baseURL: 'http://markup-slide.ddns.net',
+                    baseURL: 'https://markup-slide.ddns.net',
                     // baseURL: runtimeConfig.baseURL,
                     headers: {
                       Authorization: `Bearer ${token.value}`,

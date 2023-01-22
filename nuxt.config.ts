@@ -24,6 +24,6 @@ export default defineNuxtConfig({
   css: ['@/assets/css/tailwind.css'],
   sourcemap: false,
   runtimeConfig: {
-    baseURL: 'http://markup-slide.ddns.net',
+    baseURL: 'https://markup-slide.ddns.net',
   },
 });
