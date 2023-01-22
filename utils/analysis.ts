@@ -66,9 +66,9 @@ export const compile = (
         .replaceAll(/```.*\n[^`]*```/g, '')
         .split('\n');
       v.forEach((elem) => {
-        // if (elem.match(/^[ \t\n\r]*$/g)) return;
-        elem.replace('\r', '');
-        elem.replaceAll('\\\\', '\n');
+        if (elem.match(/^[ \t\n\r]*$/g)) return;
+        elem = elem.replace('\r', '');
+        elem = elem.replaceAll('\\\\', '\n');
 
         let e: SlideElement = {
           type: null,

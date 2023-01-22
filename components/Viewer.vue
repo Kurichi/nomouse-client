@@ -40,14 +40,19 @@ const sideViewerWidthResize = () => {
 };
 
 const getNote = (slide: SlideElement[]): string => {
-  let note = '';
-  slide?.map((element: SlideElement) => {
-    if (element?.type === 'note') {
-      note = element?.text;
-    }
-  });
+  // let note = '';
+  // slide?.map((element: SlideElement) => {
+  //   if (element?.type === 'note') {
+  //     note = element?.text;
+  //   }
+  // });
+  // console.log(note);
 
-  return note;
+  return (
+    slide?.find((value) => {
+      return value.type === 'note';
+    })?.text ?? ''
+  );
 };
 
 const getMainSlide = (): SlideElement[] => {
