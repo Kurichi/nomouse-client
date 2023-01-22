@@ -22,21 +22,28 @@ const props = defineProps({
 <template>
   <router-link
     :to="`/slide/edit/${props.id}`"
-    class="card block rounded-xl overflow-hidden max-w-fit cursor-pointer hover:shadow bg-white"
+    class="card block rounded-xl overflow-hidden max-w-fit cursor-pointer hover:shadow-md bg-white"
   >
     <div
       class="relative w-[var(--card-w)] h-[var(--card-h)] m-0 rounded-xl box-border overflow-hidden"
     >
       <img
+        v-if="props.imageUrl === ''"
         :src="props.imageUrl"
         :alt="`${props.title}の表紙画像`"
         class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
       />
+      <div
+        v-else
+        class="material-symbols-outlined text-gray-400 text-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none"
+      >
+        Image
+      </div>
     </div>
     <div class="px-5 py-3 m-0">
       <div class="card__title text-gray-600">{{ props.title }}</div>
       <div class="card__updated w-full text-end text-gray-500">
-        {{ props.createdAt }}
+        {{ $dayjs(props.createdAt).format('YYYY-MM-DD HH:mm:ss') }}
       </div>
     </div>
   </router-link>
