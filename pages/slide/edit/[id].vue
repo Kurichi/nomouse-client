@@ -150,7 +150,7 @@ onUnmounted(() => {
 <template>
   <div class="relative">
     <div
-      class="flex h-[var(--slide-editor-h)] max-w-[1980px] overflow-y-hidden overflow-x-auto relative"
+      class="flex h-[var(--slide-editor-h)] max-w-[1980px] overflow-y-hidden overflow-x-auto relative mx-auto"
       id="slide-edit"
       style="--slide-editor-h: calc(100vh - var(--header-h))"
     >

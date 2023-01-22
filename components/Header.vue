@@ -14,7 +14,7 @@ onAuthStateChanged(auth, (user) => {
 
 <template>
   <div
-    class="w-full h-[var(--header-h)] flex items-center px-10 bg-slate-100 justify-between"
+    class="w-full h-[var(--header-h)] max-w-[1980px] mx-auto flex items-center px-10 bg-slate-100 justify-between"
   >
     <BaseIconButton name="home" size="2xl" @click="$router.push('/me')" />
     <BaseUser

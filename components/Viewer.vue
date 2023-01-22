@@ -16,6 +16,7 @@ const props = defineProps({
   slides: { type: Object, required: true }, // v-model用
   changeFlag: { type: Boolean, required: true },
   currentSlide: { type: Number, default: 0 },
+  isShare: { type: Boolean, default: false },
 })
 
 const { changeFlag, currentSlide } = toRefs(props)
@@ -64,7 +65,10 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="w-1/2 h-full bg-slate-200 min-w-[500px] text-gray-700 flex">
+  <div
+    class="h-full bg-slate-200 min-w-[500px] text-gray-700 flex"
+    :class="[{ 'w-full': props.isShare }, { 'w-1/2': !props.isShare }]"
+  >
     <div
       class="w-[15%] h-full relative py-3 overflow-y-scroll box-shadow"
       id="side-viewer"
@@ -93,7 +97,7 @@ onUnmounted(() => {
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <BaseSlide
           ref="baseSlide"
-          :width="mainViewerWidth - 40"
+          :width="props.isShare ? 850 : mainViewerWidth - 40"
           :slide-data="getMainSlide()"
           :change-flag="changeFlag"
           :slide-index="mainSlide"
