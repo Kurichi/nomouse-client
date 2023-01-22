@@ -22,7 +22,7 @@ const props = defineProps({
 <template>
   <router-link
     :to="`/slide/edit/${props.id}`"
-    class="card block rounded-xl overflow-hidden max-w-fit cursor-pointer hover:shadow"
+    class="card block rounded-xl overflow-hidden max-w-fit cursor-pointer hover:shadow bg-white"
   >
     <div
       class="relative w-[var(--card-w)] h-[var(--card-h)] m-0 rounded-xl box-border overflow-hidden"

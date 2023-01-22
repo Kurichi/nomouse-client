@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const newCard = async () => {
-  const { token } = useAuth();
+  const { token } = useAuth()
   const { data } = await useFetch('/api/v1/slides', {
     method: 'POST',
     baseURL: 'http://markup-slide.ddns.net',
@@ -12,11 +12,11 @@ const newCard = async () => {
       compiled_data: '[]',
       thumbnail: '',
     },
-  });
+  })
 
-  const router = useRouter();
-  router.push(`/slide/edit/${(data.value as Slide)?.id}`);
-};
+  const router = useRouter()
+  router.push(`/slide/edit/${(data.value as Slide)?.id}`)
+}
 </script>
 
 <template>
@@ -25,7 +25,7 @@ const newCard = async () => {
     class="card block rounded-xl max-w-fit cursor-pointer"
   >
     <div
-      class="relative w-[var(--card-w)] h-[var(--card-h)] m-0 rounded-xl border-2 border-gray-200 box-border overflow-hidden hover:shadow-md"
+      class="relative w-[var(--card-w)] h-[var(--card-h)] m-0 rounded-xl border-2 border-gray-200 box-border overflow-hidden hover:shadow-md bg-white"
     >
       <span
         class="material-symbols-outlined text-8xl text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"

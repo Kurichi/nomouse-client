@@ -17,7 +17,10 @@ const cards = data.value as Slide[]
 </script>
 
 <template>
-  <div class="py-20">
+  <div
+    class="py-20 bg-slate-200 h-[var(--slide-editor-h)]"
+    style="--slide-editor-h: calc(100vh - var(--header-h))"
+  >
     <div class="card-grid max-w-[1210px] mx-auto">
       <NewCard />
       <Card

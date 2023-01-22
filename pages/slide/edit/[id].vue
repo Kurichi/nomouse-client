@@ -6,6 +6,7 @@ definePageMeta({
   middleware: ['auth'],
 })
 
+const copyed = ref(false)
 const code = ref(`# はじめに\n\n- これは箇条書き\n- 2つ目の箇条書き\n`)
 const slides = ref<Page[]>([])
 const thumbnail = ref('')
@@ -93,6 +94,10 @@ const share = () => {
     navigator.clipboard.writeText(
       `https://kurichi.github.io/nomouse-client/slide/share/${share_id}`
     )
+    copyed.value = true
+    setTimeout(() => {
+      copyed.value = false
+    }, 4000)
   })()
 }
 
@@ -157,6 +162,11 @@ onUnmounted(() => {
           @click="presentation()"
         />
         <BaseIconButton name="output" size="2xl" @click="share()" />
+        <span
+          v-if="copyed"
+          class="text-xs absolute top-16 right-0 text-gray-500 text-center"
+          >共有リンクを<br />コピーしました！</span
+        >
       </div>
       <Editor
         v-model="code"
