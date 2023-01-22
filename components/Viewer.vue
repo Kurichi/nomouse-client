@@ -1,14 +1,14 @@
 <script setup lang="ts">
 // import { SlideElement } from '@/@types/slide';
-import BaseSlide from '@/components/BaseSlide.vue';
+import BaseSlide from '@/components/BaseSlide.vue'
 
-const mainViewer = ref<HTMLDivElement>();
-const mainViewerWidth = ref(0);
+const mainViewer = ref<HTMLDivElement>()
+const mainViewerWidth = ref(0)
 
-const sideViewer = ref<HTMLDivElement>();
-const sideViewerWidth = ref(0);
+const sideViewer = ref<HTMLDivElement>()
+const sideViewerWidth = ref(0)
 
-const mainSlide = ref(0);
+const mainSlide = ref(0)
 
 // const slides = ref<SlideElement[][]>([]);
 
@@ -16,48 +16,51 @@ const props = defineProps({
   slides: { type: Object, required: true }, // v-model用
   changeFlag: { type: Boolean, required: true },
   currentSlide: { type: Number, default: 0 },
-});
+})
 
-const { changeFlag } = toRefs(props);
+const { changeFlag, currentSlide } = toRefs(props)
+
+watch(currentSlide, (cr, prev) => {
+  mainSlide.value = cr
+})
 
 onMounted(() => {
-  window.addEventListener('resize', mainViewerWidthResize);
-  window.addEventListener('resize', sideViewerWidthResize);
-  mainViewerWidthResize();
-  sideViewerWidthResize();
-});
+  window.addEventListener('resize', mainViewerWidthResize)
+  window.addEventListener('resize', sideViewerWidthResize)
+  mainViewerWidthResize()
+  sideViewerWidthResize()
+})
 
 const mainViewerWidthResize = () => {
-  mainViewerWidth.value = mainViewer.value?.clientWidth!;
-};
+  mainViewerWidth.value = mainViewer.value?.clientWidth!
+}
 const sideViewerWidthResize = () => {
-  sideViewerWidth.value = sideViewer.value?.clientWidth!;
-};
+  sideViewerWidth.value = sideViewer.value?.clientWidth!
+}
 
 const getNote = (slide: SlideElement[]): string => {
-  let note = '';
+  let note = ''
   slide?.map((element: SlideElement) => {
     if (element?.type === 'note') {
-      note = element?.text;
+      note = element?.text
     }
-  });
+  })
 
-  return note;
-};
+  return note
+}
 
 const getMainSlide = (): SlideElement[] => {
-  console.log('ababa', props.currentSlide);
-  return props.slides[props.currentSlide]?.elements;
-};
+  return props.slides[mainSlide.value]?.elements
+}
 
 const changeMainSlide = (index: number) => {
-  mainSlide.value = index;
-};
+  mainSlide.value = index
+}
 
 onUnmounted(() => {
-  window.removeEventListener('resize', mainViewerWidthResize);
-  window.removeEventListener('resize', sideViewerWidthResize);
-});
+  window.removeEventListener('resize', mainViewerWidthResize)
+  window.removeEventListener('resize', sideViewerWidthResize)
+})
 </script>
 
 <template>
@@ -78,6 +81,7 @@ onUnmounted(() => {
           :slide-id="`sub-${index}`"
           :slide-data="slide.elements"
           class="mx-auto cursor-pointer"
+          :class="{ ' opacity-60': mainSlide != index }"
           @click="changeMainSlide(index)"
         />
         <div class="text-center text-xs text-gray-400 mt-1 select-none">
@@ -92,12 +96,12 @@ onUnmounted(() => {
           :width="mainViewerWidth - 40"
           :slide-data="getMainSlide()"
           :change-flag="changeFlag"
-          :slide-index="props.currentSlide"
+          :slide-index="mainSlide"
           slide-id="main"
           shadow-size="lg"
         />
         <BaseSlideComment
-          :comment="getNote((props.slides as Page[])[props.currentSlide]?.elements)"
+          :comment="getNote((props.slides as Page[])[mainSlide]?.elements)"
           class="mx-auto mt-10"
         />
       </div>

@@ -148,7 +148,6 @@ onUnmounted(() => {
       class="flex h-[var(--slide-editor-h)] max-w-[1980px] overflow-y-hidden overflow-x-auto relative"
       id="slide-edit"
       style="--slide-editor-h: calc(100vh - var(--header-h))"
-      v-show="!isPresentation"
     >
       <div class="!absolute top-[5%] right-5 z-20 flex">
         <BaseIconButton
@@ -176,7 +175,7 @@ onUnmounted(() => {
     <Presentation
       :slides="slides"
       :screen-width="screenWidth"
-      v-if="isPresentation"
+      v-show="isPresentation"
     />
   </div>
 </template>
