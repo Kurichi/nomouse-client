@@ -159,6 +159,7 @@ export const compile = (
       });
     });
 
+    console.log(result);
     onEndCompile(result);
   };
 

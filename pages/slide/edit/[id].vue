@@ -138,6 +138,10 @@ const save = () => {
           code: code.value,
           compiled_data: JSON.stringify(slides.value),
           thumbnail: thumbnail.value,
+          title:
+            slides.value[0].elements.find((value) => {
+              return value.type === 'title';
+            })?.text ?? 'NoTitle',
         },
       });
     }

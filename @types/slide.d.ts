@@ -44,6 +44,7 @@ interface SlideInfo {
 interface Slide {
   id: string;
   thumbnail: string;
+  title: string;
   code: string;
   compiled_data: string;
   google_uid: string;

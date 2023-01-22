@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import Card from '@/components/Card.vue'
-import NewCard from '@/components/NewCard.vue'
+import Card from '@/components/Card.vue';
+import NewCard from '@/components/NewCard.vue';
 
 definePageMeta({
   middleware: ['auth'],
-})
+});
 
-const { token } = useAuth()
+const { token } = useAuth();
 const { data } = await useFetch('/api/v1/slides', {
   baseURL: 'https://markup-slide.ddns.net',
   headers: {
     Authorization: `Bearer ${token.value}`,
   },
-})
-const cards = data.value as Slide[]
+});
+const cards = data.value as Slide[];
 </script>
 
 <template>
@@ -27,7 +27,7 @@ const cards = data.value as Slide[]
         v-for="(card, index) in cards"
         :key="index"
         :id="card.id"
-        :title="'temp'"
+        :title="card.title"
         :created-at="card.created_at"
         :image-url="`https://markup-slide.ddns.net/assets/${card.google_uid}/${card.id}.png`"
       />
