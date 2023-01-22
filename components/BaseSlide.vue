@@ -32,6 +32,8 @@ const theme = {
   textSize: 30,
   textColor: '#777777',
 }
+type Img = { src: string; x: string; y: string; w: string; h: string }
+const img = ref<Img[]>()
 
 const shadowSizeHandler = (): string => {
   switch (props.shadowSize) {
@@ -57,12 +59,13 @@ const draw = () => {
   preventElementType.value = ''
 
   if (slideCanvas.value) {
+    let position = { x: 0, y: 0 }
+    img.value = new Array<Img>()
     const ctx = slideCanvas.value.getContext('2d')
     if (ctx) {
       ctx.clearRect(0, 0, slideCanvas.value.width, slideCanvas.value.height)
       ctx.fillStyle = '#ffffff'
       ctx.fillRect(0, 0, slideCanvas.value.width, slideCanvas.value.height)
-
       props.slideData.forEach((element: SlideElement) => {
         if (element.color) {
           ctx.fillStyle = element.color
@@ -72,8 +75,8 @@ const draw = () => {
         if (element.type) {
           switch (element.type) {
             case 'title':
-              if (['plane', 'bullet'].includes(preventElementType.value)) {
-                currentPositionY.value += 30
+              if (!['title'].includes(preventElementType.value)) {
+                currentPositionY.value += 50
               }
               console.log('title')
               ctx.font = `bold ${theme.titleSize}pt ${theme.fontStyle}`
@@ -101,6 +104,7 @@ const draw = () => {
               currentPositionY.value += theme.textSize + 40
               break
             case 'bullet':
+              console.log(element)
               if (['bullet'].includes(preventElementType.value)) {
                 currentPositionY.value -= 10
               } else {
@@ -108,9 +112,20 @@ const draw = () => {
               }
               console.log('bullet')
               ctx.font = `100 ${theme.textSize}pt ${theme.fontStyle}`
+              let op = '・ '
+              switch (element.options) {
+                case '1':
+                  op = '› '
+                  break
+                case '2':
+                  op = '- '
+                  break
+                default:
+                  break
+              }
               ctx.fillText(
-                '・ ' + element.text,
-                currentPositionX.value + 50,
+                op + element.text,
+                currentPositionX.value + 50 + 50 * parseInt(element.options),
                 currentPositionY.value
               )
               currentPositionY.value += theme.textSize + 40
@@ -125,21 +140,42 @@ const draw = () => {
               ctx.font = `100 ${theme.textSize}pt ${theme.fontStyle}`
               ctx.fillText(
                 element.text,
-                currentPositionX.value + 50,
+                currentPositionX.value + 50 + 50 * parseInt(element.options),
                 currentPositionY.value
               )
               currentPositionY.value += theme.textSize + 40
               break
-            case 'media':
-              console.log('media')
+            case 'image':
+              console.log('image')
+              console.log(element)
               console.log(element.text)
-              const { x, y } = ctxPositionSetting(element, ctx)
-              ctx.font = `100 ${theme.textSize}pt ${theme.fontStyle}`
-              const chara = new Image()
-              chara.src = element.text
-              chara.onload = () => {
-                ctx.drawImage(chara, x, y)
+              const { imgx, imgy } = imgPosition(element)
+              if (element.size.width !== '') {
+                img.value!.push({
+                  src: element.text,
+                  x: imgx,
+                  y: imgy,
+                  w: element.size.width,
+                  h: element.size.height,
+                })
+              } else {
+                img.value!.push({
+                  src: element.text,
+                  x: imgx,
+                  y: imgy,
+                  w: '200',
+                  h: 'auto',
+                })
               }
+              break
+            case 'text':
+              console.log('text')
+              console.log(element)
+              console.log(element.text)
+              position = ctxPositionSetting(element, ctx)
+              console.log(position)
+              ctx.font = `100 ${theme.textSize}pt ${theme.fontStyle}`
+              ctx.fillText(element.text, position.x, position.y)
               break
             default:
               break
@@ -151,6 +187,41 @@ const draw = () => {
   }
 }
 
+const imgPosition = (element: SlideElement) => {
+  let x = 'left: 50%;'
+  let y = 'top: 50%;'
+  if (element.position) {
+    console.log('have position')
+    switch (element.position!.x!) {
+      case 'left':
+        x = 'left: 5%;'
+        break
+      case 'right':
+        x = 'right: 5%;'
+        break
+      case 'center':
+        x = 'left: 50%; transform: translateX(-50%);'
+        break
+      default:
+        break
+    }
+    switch (element.position!.y!) {
+      case 'top':
+        y = 'top: 5%;'
+        break
+      case 'bottom':
+        y = 'bottom: 5%;'
+        break
+      case 'center':
+        y = 'top: 50%; transform: translateY(-50%);'
+        break
+      default:
+        break
+    }
+  }
+  return { imgx: x, imgy: y }
+}
+
 const ctxPositionSetting = (
   element: SlideElement,
   ctx: CanvasRenderingContext2D
@@ -158,42 +229,36 @@ const ctxPositionSetting = (
   let x = 0
   let y = 0
   if (element.position) {
-    if (typeof element.position!.x! === 'string') {
-      x = parseInt(element.position!.x!)
-    } else {
-      switch (element.position!.x!) {
-        case 'left':
-          x = 0
-          break
-        case 'right':
-          x = slideCanvas.value?.width! - ctx.measureText(element.text).width
-          break
-        case 'center':
-          x =
-            (slideCanvas.value?.width! - ctx.measureText(element.text).width) /
-            2
-          break
-        default:
-          break
-      }
+    console.log('have position')
+    switch (element.position!.x!) {
+      case 'left':
+        x = 0
+        break
+      case 'right':
+        x = slideCanvas.value?.width! - ctx.measureText(element.text).width
+        break
+      case 'center':
+        x =
+          (slideCanvas.value?.width! - ctx.measureText(element.text).width) / 2
+        console.log(x)
+        break
+      default:
+        x = parseInt(element.position!.x!)
+        break
     }
-    if (typeof element.position!.y! === 'string') {
-      y = parseInt(element.position!.y!)
-    } else {
-      switch (element.position!.y!) {
-        case 'top':
-          y = parseInt(element.size as string)
-          break
-        case 'bottom':
-          y = slideCanvas.value?.height!
-          break
-        case 'center':
-          y =
-            (slideCanvas.value?.height! + parseInt(element.size as string)) / 2
-          break
-        default:
-          break
-      }
+    switch (element.position!.y!) {
+      case 'top':
+        y = theme.textSize
+        break
+      case 'bottom':
+        y = slideCanvas.value?.height!
+        break
+      case 'center':
+        y = (slideCanvas.value?.height! + theme.textSize) / 2
+        break
+      default:
+        y = parseInt(element.position!.y!)
+        break
     }
   }
   return { x: x, y: y }
@@ -213,7 +278,7 @@ watch([changeFlag, slideIndex], (cr, prev) => {
 <template>
   <div
     :id="`slide-${props.slideId}-wrapper`"
-    class="shadow-gray-300 bg-white overflow-hidden rounded w-[var(--slide-w)] h-[var(--slide-h)] max-w-[var(--max-w)] max-h-[var(--max-h)]"
+    class="relative shadow-gray-300 bg-white overflow-hidden rounded w-[var(--slide-w)] h-[var(--slide-h)] max-w-[var(--max-w)] max-h-[var(--max-h)]"
     :class="[shadowSizeHandler()]"
     :style="`--slide-w: ${props.width}px; --slide-h: ${
       props.width * 0.6
@@ -225,6 +290,14 @@ watch([changeFlag, slideIndex], (cr, prev) => {
       class="w-full h-full"
       width="1500"
       height="900"
+    />
+    <img
+      v-for="(item, index) in img"
+      :key="index"
+      :src="item.src"
+      alt=""
+      class="absolute"
+      :style="`${item.y} ${item.x} width: ${item.w}px; height: auto;`"
     />
   </div>
 </template>
