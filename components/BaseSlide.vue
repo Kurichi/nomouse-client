@@ -10,6 +10,7 @@ const props = defineProps({
   changeFlag: { type: Boolean, default: true },
   slideId: { type: String, required: true },
   slideIndex: { type: Number, default: 0 },
+  maxW: { type: Number, default: 2000 },
 })
 const { changeFlag, slideIndex } = toRefs(props)
 
@@ -212,9 +213,11 @@ watch([changeFlag, slideIndex], (cr, prev) => {
 <template>
   <div
     :id="`slide-${props.slideId}-wrapper`"
-    class="shadow-gray-300 bg-white overflow-hidden rounded w-[var(--slide-w)] h-[var(--slide-h)]"
+    class="shadow-gray-300 bg-white overflow-hidden rounded w-[var(--slide-w)] h-[var(--slide-h)] max-w-[var(--max-w)] max-h-[var(--max-h)]"
     :class="[shadowSizeHandler()]"
-    :style="`--slide-w: ${props.width}px; --slide-h: ${props.width * 0.6}px;`"
+    :style="`--slide-w: ${props.width}px; --slide-h: ${
+      props.width * 0.6
+    }px; --max-w: ${props.maxW}px; --max-h: ${props.maxW * 0.6}px;`"
   >
     <canvas
       :id="`slide-${props.slideId}`"

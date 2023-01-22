@@ -97,10 +97,11 @@ onUnmounted(() => {
       <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <BaseSlide
           ref="baseSlide"
-          :width="props.isShare ? 850 : mainViewerWidth - 40"
+          :width="mainViewerWidth - 40"
           :slide-data="getMainSlide()"
           :change-flag="changeFlag"
           :slide-index="mainSlide"
+          :max-w="props.isShare ? 850 : 2000"
           slide-id="main"
           shadow-size="lg"
         />
