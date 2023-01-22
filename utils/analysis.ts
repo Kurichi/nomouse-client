@@ -66,7 +66,10 @@ export const compile = (
         .replaceAll(/```.*\n[^`]*```/g, '')
         .split('\n');
       v.forEach((elem) => {
+        // if (elem.match(/^[ \t\n\r]*$/g)) return;
+        elem.replace('\r', '');
         elem.replaceAll('\\\\', '\n');
+
         let e: SlideElement = {
           type: null,
           text: '',
@@ -104,7 +107,7 @@ export const compile = (
           e.size = { width: '', height: '' };
           e.position = { x: 'center', y: 'center' };
           options.forEach((order) => {
-            const [_for, _val] = order.split(/[\:\=]/g);
+            const [_for, _val] = order.split(/[\=]/g);
             // const _val = order.split('=')[1];
             if (typeof _val === 'undefined') e.text = _for.replaceAll('\r', '');
             else if (_for === 'color') {
