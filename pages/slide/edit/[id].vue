@@ -18,7 +18,7 @@ const screenWidth = ref(0)
 const route = useRoute()
 const { token } = useAuth()
 const { data } = await useFetch(`/api/v1/slides/${route.params.id}/`, {
-  baseURL: 'http://markup-slide.ddns.net',
+  baseURL: 'https://markup-slide.ddns.net',
   headers: {
     Authorization: `Bearer ${token.value}`,
   },
@@ -110,7 +110,7 @@ const save = () => {
   //     const { token } = await useAuth()
   //     useFetch('/api/v1/assets/', {
   //       method: 'POST',
-  //       baseURL: 'http://markup-slide.ddns.net',
+  //       baseURL: 'https://markup-slide.ddns.net',
   //       headers: {
   //         Authorization: `Bearer ${token.value}`,
   //         'Content-Type': 'multipart/form-data',
@@ -127,7 +127,7 @@ const save = () => {
     if (route.params.id) {
       const { data } = await useFetch('/api/v1/slides/', {
         method: 'PUT',
-        baseURL: 'http://markup-slide.ddns.net',
+        baseURL: 'https://markup-slide.ddns.net',
         headers: {
           Authorization: `Bearer ${token.value}`,
         },
