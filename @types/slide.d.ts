@@ -15,13 +15,13 @@ type YPositionType = 'top' | 'bottom' | 'center';
 type XPositionType = 'left' | 'right' | 'center';
 
 interface Size {
-  width?: string;
-  height?: string;
+  width: string;
+  height: string;
 }
 
 interface Position {
-  x?: string | XPositionType;
-  y?: string | YPositionType;
+  x: string | XPositionType;
+  y: string | YPositionType;
 }
 
 interface SlideElement {
@@ -29,8 +29,8 @@ interface SlideElement {
   text: string;
   options?: string;
   color?: string;
-  size?: Size | string;
-  position?: Position | string;
+  size?: Size; //| string;
+  position?: Position; //| string;
 }
 
 interface SlideInfo {

@@ -100,19 +100,20 @@ export const compile = (
         // アイテム
         else if (elem.startsWith('\\')) {
           e.type = elem.split(' ')[0].replace('\\', '') as ElementType;
-          const options = elem.replace(/^\\^[ ]+ /g, '').split(' ');
-          e.size = {};
-          e.position = {};
+          const options = elem.replace(/^\\[^ ]+ /g, '').split(' ');
+          e.size = { width: '', height: '' };
+          e.position = { x: 'center', y: 'center' };
           options.forEach((order) => {
-            const [_for, _val] = order.split(/[:=]/g);
+            const [_for, _val] = order.split(/[\:\=]/g);
             // const _val = order.split('=')[1];
-            if (typeof _val === 'undefined') e.text = _for;
+            if (typeof _val === 'undefined') e.text = _for.replaceAll('\r', '');
             else if (_for === 'color') {
               e.color = _val;
             } else if (_for === 'size') {
               if (typeof _val !== 'undefined') {
                 const [width, height] = _val
                   .replaceAll(/[\(\)]/g, '')
+                  .replaceAll('\r', '')
                   .split(',');
                 e.size = {
                   width: width,
@@ -120,21 +121,24 @@ export const compile = (
                 };
               }
             } else if (_for === 'width') {
-              e.size.width = _val;
+              e.size!.width = _val;
             } else if (_for === 'height') {
-              e.size.height = _val;
+              e.size!.height = _val;
             } else if (_for === 'position') {
               if (typeof _val !== 'undefined') {
-                const [x, y] = _val.replaceAll(/[\(\)]/g, '').split(',');
+                const [x, y] = _val
+                  .replaceAll(/[\(\)]/g, '')
+                  .replaceAll('\r', '')
+                  .split(',');
                 e.position = {
                   x: x,
                   y: y,
                 };
               }
             } else if (_for === 'x') {
-              e.position.x = _val;
+              e.position!.x = _val;
             } else if (_for === 'y') {
-              e.position.y = _val;
+              e.position!.y = _val;
             }
           });
         } else {
@@ -159,7 +163,13 @@ export const compile = (
   };
 
   // ここから解析開始
-  if (change === ' ' || change === '\n' || change === '\t' || change === '')
+  if (
+    change === ' ' ||
+    change === '\n' ||
+    change === '\t' ||
+    change === '' ||
+    change === '\r\n'
+  )
     Analysis();
   else beforePromise.value = setTimeout(Analysis, 1000);
 };
