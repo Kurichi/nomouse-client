@@ -9,7 +9,8 @@ type ElementType =
   | 'media'
   | 'note'
   | 'code-block'
-  | 'item';
+  | 'item'
+  | 'image';
 
 type YPositionType = 'top' | 'bottom' | 'center';
 type XPositionType = 'left' | 'right' | 'center';
